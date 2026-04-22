@@ -48,17 +48,12 @@ public class LlmService {
 
         // 4. 응답 파싱
         try {
-            // LLM이 반환한 JSON 문자열을 LlmFamilyEventData 객체로 파싱
-            System.out.println("success LLM 응답: " + jsonResponse);
             return objectMapper.readValue(jsonResponse, LlmFamilyEventData.class);
         } catch (Exception e) {
-            // 오류 처리
             throw new RuntimeException("fail LLM JSON 응답 파싱 실패: " + jsonResponse, e);
         }
     }
 
-
-    // LlmService.java에 추가
     public String getSearchKeywords(String prompt) {
         try {
             String systemPrompt = """
@@ -68,16 +63,12 @@ public class LlmService {
                 JSON 형식이 아닌 일반 텍스트로만 응답해줘.
                 """;
 
-            String response = chatClient.prompt()
+            return chatClient.prompt()
                     .system(systemPrompt)
                     .user(prompt)
                     .call()
                     .content();
-
-            System.out.println("*** DEBUG: LLM 검색어 응답: " + response + " ***");
-            return response;
         } catch (Exception e) {
-            System.out.println("*** DEBUG: LLM 검색어 생성 실패: " + e.getMessage() + " ***");
             throw new RuntimeException("LLM 검색어 생성 실패: " + e.getMessage());
         }
     }
@@ -101,11 +92,8 @@ public class LlmService {
 
         // 응답 파싱
         try {
-            // LLM이 반환한 JSON 문자열을 LlmFamilyEventData 객체로 파싱
-            System.out.println("success LLM 응답: " + jsonResponse);
             return objectMapper.readValue(jsonResponse, LlmOfferData.class);
         } catch (Exception e) {
-            // 오류 처리
             throw new RuntimeException("fail LLM JSON 응답 파싱 실패: " + jsonResponse, e);
         }
 

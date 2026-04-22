@@ -38,8 +38,8 @@ class RelationshipStrategyServiceImplTest {
                 10_000,20_000,30_000,5_000,7_000);
         ChatAutoStats auto = new ChatAutoStats(0,0,0,0,0,0,0,0,0,0,
                 100,200,300,400,500,600,-100,-200,-300,-400);
-        Person person = new Person(new User("tester@example.com", "Tester", LocalDate.of(1990,1,1), null),
-                "Tester", LocalDate.of(1990,1,1), null, PersonStatus.INTEREST, PersonRelation.FRIEND, 24);
+        Person person = new Person(new User("tester@example.com", "홍길동", LocalDate.of(1990,1,1), null),
+                "홍길동", LocalDate.of(1990,1,1), null, PersonStatus.INTEREST, PersonRelation.FRIEND, 24);
         PersonValue value = new PersonValue(person, 123_000_000, 2025, 8, "좋은 분위기", 0.1);
         value.setManualStats(manual);
         value.setAutoStats(auto);
@@ -74,8 +74,8 @@ class RelationshipStrategyServiceImplTest {
 
         RelationshipStrategyServiceImpl service = new RelationshipStrategyServiceImpl(chatClient, new ObjectMapper());
 
-        Person person = new Person(new User("tester@example.com", "Tester", LocalDate.of(1990,1,1), null),
-                "Tester", LocalDate.of(1990,1,1), null, PersonStatus.MAINTAIN, PersonRelation.FRIEND, 24);
+        Person person = new Person(new User("tester@example.com", "홍길동", LocalDate.of(1990,1,1), null),
+                "홍길동", LocalDate.of(1990,1,1), null, PersonStatus.MAINTAIN, PersonRelation.FRIEND, 24);
 
         List<MonthlySummarySnapshot> summaries = List.of();
         MonthlyComputationContext context = createContext();
@@ -95,8 +95,8 @@ class RelationshipStrategyServiceImplTest {
 
         RelationshipStrategyServiceImpl service = new RelationshipStrategyServiceImpl(chatClient, new ObjectMapper());
 
-        Person person = new Person(new User("tester@example.com", "Tester", LocalDate.of(1990,1,1), null),
-                "Tester", LocalDate.of(1990,1,1), null, PersonStatus.MAINTAIN, PersonRelation.FRIEND, 24);
+        Person person = new Person(new User("tester@example.com", "홍길동", LocalDate.of(1990,1,1), null),
+                "홍길동", LocalDate.of(1990,1,1), null, PersonStatus.MAINTAIN, PersonRelation.FRIEND, 24);
 
         var result = service.recommend(person, List.of(), createContext());
         assertEquals("", result.interestStrategy());

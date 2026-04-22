@@ -48,8 +48,8 @@ class PersistenceCoordinatorTest {
     @Test
     @DisplayName("계산 결과가 PersonValue 저장 후 월별 스냅샷을 반환한다")
     void persist_savesEntities() throws Exception {
-        Person person = new Person(new User("tester@example.com", "Tester", LocalDate.of(1990, 1, 1), null),
-                "Tester", LocalDate.of(1990, 1, 1), null, PersonStatus.MAINTAIN, PersonRelation.FRIEND, 12);
+        Person person = new Person(new User("tester@example.com", "홍길동", LocalDate.of(1990, 1, 1), null),
+                "홍길동", LocalDate.of(1990, 1, 1), null, PersonStatus.MAINTAIN, PersonRelation.FRIEND, 12);
 
         ChatManualStats manual = new ChatManualStats(0, 0, 0, 0, 0,
                 10_000, 20_000, 30_000,
@@ -96,8 +96,8 @@ class PersistenceCoordinatorTest {
     @Test
     @DisplayName("직렬화 오류가 발생해도 저장은 계속된다")
     void persist_handlesSerializationError() throws Exception {
-        Person person = new Person(new User("tester@example.com", "Tester", LocalDate.of(1990, 1, 1), null),
-                "Tester", LocalDate.of(1990, 1, 1), null, PersonStatus.MAINTAIN, PersonRelation.FRIEND, 12);
+        Person person = new Person(new User("tester@example.com", "홍길동", LocalDate.of(1990, 1, 1), null),
+                "홍길동", LocalDate.of(1990, 1, 1), null, PersonStatus.MAINTAIN, PersonRelation.FRIEND, 12);
 
         ChatManualStats manual = new ChatManualStats(0,0,0,0,0,
                 0,0,0,0,0);

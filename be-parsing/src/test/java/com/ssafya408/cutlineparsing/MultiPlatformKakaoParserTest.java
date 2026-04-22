@@ -62,11 +62,11 @@ public class MultiPlatformKakaoParserTest {
     @Test
     @DisplayName("Android 플랫폼 - 기본 PM 라인 파싱")
     void parse_android_pm_line() {
-        String line = "2025년 8월 3일 오후 4:00, 김형수 : 응 프론트 안해~";
+        String line = "2025년 8월 3일 오후 4:00, 홍길동 : 응 프론트 안해~";
         MessageRaw result = parseTestLine(line);
         
         assertEquals(ZonedDateTime.of(2025, 8, 3, 16, 0, 0, 0, KST), result.dt());
-        assertEquals("김형수", result.speakerName());
+        assertEquals("홍길동", result.speakerName());
         assertEquals("응 프론트 안해~", result.text());
         assertFalse(result.isSystem());
     }
@@ -85,11 +85,11 @@ public class MultiPlatformKakaoParserTest {
     @Test
     @DisplayName("iOS 플랫폼 - 점 형식 날짜 파싱")
     void parse_ios_dot_format() {
-        String line = "2025. 8. 3. 16:00, 김형수 : iOS에서 보내는 메시지";
+        String line = "2025. 8. 3. 16:00, 홍길동 : iOS에서 보내는 메시지";
         MessageRaw result = parseTestLine(line);
         
         assertEquals(ZonedDateTime.of(2025, 8, 3, 16, 0, 0, 0, KST), result.dt());
-        assertEquals("김형수", result.speakerName());
+        assertEquals("홍길동", result.speakerName());
         assertEquals("iOS에서 보내는 메시지", result.text());
     }
 
@@ -110,7 +110,7 @@ public class MultiPlatformKakaoParserTest {
     @Test
     @DisplayName("오전/오후 경계값 테스트 - 오전 12시")
     void parse_am_midnight_edge() {
-        String line = "2025년 8월 4일 오전 12:02, 김형수 : 맞아";
+        String line = "2025년 8월 4일 오전 12:02, 홍길동 : 맞아";
         MessageRaw result = parseTestLine(line);
         
         assertEquals(0, result.dt().getHour());
@@ -163,8 +163,8 @@ public class MultiPlatformKakaoParserTest {
     void compatibility_android_format() {
         String[] androidLines = {
             "2025년 8월 3일 오후 4:00, 홍길동 : 안녕하세요",
-            "2025년 12월 31일 오전 11:59, 김형수 : 연말인사",
-            "2025년 1월 1일 오전 12:00, 김형수 : 새해복많이"
+            "2025년 12월 31일 오전 11:59, 홍길동 : 연말인사",
+            "2025년 1월 1일 오전 12:00, 홍길동 : 새해복많이"
         };
 
         for (String line : androidLines) {
@@ -178,8 +178,8 @@ public class MultiPlatformKakaoParserTest {
     void compatibility_ios_format() {
         String[] iosLines = {
             "2025. 8. 3. 16:00, 홍길동 : 안녕하세요",
-            "2025. 12. 31. 23:59, 김형수 : 연말인사",
-            "2025. 1. 1. 0:00, 김형수 : 새해복많이"
+            "2025. 12. 31. 23:59, 홍길동 : 연말인사",
+            "2025. 1. 1. 0:00, 홍길동 : 새해복많이"
         };
 
         for (String line : iosLines) {
@@ -194,8 +194,8 @@ public class MultiPlatformKakaoParserTest {
         String dateHeader = "--- 2025년 8월 3일 토요일 ---";
         String[] pcLines = {
             "[홍길동] [오후 4:00] 안녕하세요",
-            "[김형수] [오후 11:59] 연말인사",
-            "[김형수] [오전 12:00] 새해복많이"
+            "[홍길동] [오후 11:59] 연말인사",
+            "[홍길동] [오전 12:00] 새해복많이"
         };
 
         for (String line : pcLines) {
@@ -210,7 +210,7 @@ public class MultiPlatformKakaoParserTest {
         MultiPlatformKakaoParser testParser = new MultiPlatformKakaoParser();
         String[] lines = {
             "2025년 8월 3일 오후 4:00, 홍길동 : 첫 번째 메시지",
-            "2025년 8월 3일 오후 4:01, 김형수 : 두 번째 메시지"
+            "2025년 8월 3일 오후 4:01, 홍길동 : 두 번째 메시지"
         };
 
         List<MessageRaw> messages = new ArrayList<>();
@@ -238,7 +238,7 @@ public class MultiPlatformKakaoParserTest {
         MessageRaw firstMsg = messages.get(0);
         MessageRaw lastMsg = messages.get(messages.size() - 1);
         
-        assertTrue(firstMsg.speakerName().equals("홍길동") || firstMsg.speakerName().equals("김형수"));
-        assertTrue(lastMsg.speakerName().equals("홍길동") || lastMsg.speakerName().equals("김형수"));
+        assertEquals("홍길동", firstMsg.speakerName());
+        assertEquals("홍길동", lastMsg.speakerName());
     }
 }

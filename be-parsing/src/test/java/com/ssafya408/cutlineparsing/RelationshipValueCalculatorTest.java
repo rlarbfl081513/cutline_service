@@ -23,8 +23,8 @@ class RelationshipValueCalculatorTest {
     private final RelationshipValueCalculator calculator = new RelationshipValueCalculator();
 
     private Person samplePerson(PersonRelation relation, PersonStatus status, int durationMonths) {
-        return new Person(new User("sample@example.com", "샘플", LocalDate.of(1990, 1, 1), null),
-                "샘플", LocalDate.of(1990, 1, 1), null, status, relation, durationMonths);
+        return new Person(new User("sample@example.com", "홍길동", LocalDate.of(1990, 1, 1), null),
+                "홍길동", LocalDate.of(1990, 1, 1), null, status, relation, durationMonths);
     }
 
     private ChatManualStats manual(int bonusChars, int bonusMessages, int bonusDays,

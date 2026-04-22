@@ -69,7 +69,7 @@ class ParsingServiceTest {
         when(contextBuilder.buildSequential(any(), any(), any(), any(), any())).thenReturn(List.of(context));
 
         MockMultipartFile file = new MockMultipartFile("file", "chat.txt", "text/plain", "dummy".getBytes(StandardCharsets.UTF_8));
-        service.process(1L, file, "테스트사용자");
+        service.process(1L, file, "홍길동");
 
         verify(contextBuilder).buildSequential(any(), any(), any(), any(), any());
         verify(updateCoordinator).persistAndUpdate(eq(person), eq(List.of(context)));
@@ -108,7 +108,7 @@ class ParsingServiceTest {
         when(autoAnalysisService.analyze(any(), any(), any(), any())).thenReturn(autoResult);
 
         MockMultipartFile file = new MockMultipartFile("file", "chat.txt", "text/plain", "dummy".getBytes(StandardCharsets.UTF_8));
-        service.processWithBatchAutoAnalysis(1L, file, "테스트사용자");
+        service.processWithBatchAutoAnalysis(1L, file, "홍길동");
 
         verify(contextBuilder).buildWithAutoAnalyses(any(), any(), any(), any());
         verify(updateCoordinator).persistAndUpdate(eq(person), eq(List.of(context)));
@@ -145,7 +145,7 @@ class ParsingServiceTest {
         when(contextBuilder.buildSequential(any(), any(), any(), any(), any())).thenReturn(List.of(context));
 
         MockMultipartFile file = new MockMultipartFile("file", "chat.txt", "text/plain", "dummy".getBytes(StandardCharsets.UTF_8));
-        service.update(1L, file, "테스트사용자");
+        service.update(1L, file, "홍길동");
 
         verify(updateCoordinator).persistAndUpdate(eq(person), eq(List.of(context)));
     }
@@ -187,7 +187,7 @@ class ParsingServiceTest {
         when(contextBuilder.buildSequential(any(), any(), any(), any(), any())).thenReturn(List.of(mayContext, juneContext, julyContext));
 
         MockMultipartFile file = new MockMultipartFile("file", "chat.txt", "text/plain", "dummy".getBytes(StandardCharsets.UTF_8));
-        service.update(1L, file, "테스트사용자");
+        service.update(1L, file, "홍길동");
 
         verify(updateCoordinator).purgeFromMonth(person, YearMonth.of(2025, 5));
 
@@ -201,8 +201,8 @@ class ParsingServiceTest {
     }
 
     private Person createPerson() {
-        return new Person(new User("user@example.com", "User", LocalDate.of(1990, 1, 1), null),
-                "Friend", LocalDate.of(1990, 1, 1), null, null, PersonRelation.FRIEND, 12);
+        return new Person(new User("user@example.com", "홍길동", LocalDate.of(1990, 1, 1), null),
+                "홍길동", LocalDate.of(1990, 1, 1), null, null, PersonRelation.FRIEND, 12);
     }
 
     private MonthOutput createMonthOutput(YearMonth ym) {

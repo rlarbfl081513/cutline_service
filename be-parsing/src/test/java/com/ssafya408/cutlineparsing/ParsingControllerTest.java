@@ -72,7 +72,7 @@ class ParsingControllerTest {
     @DisplayName("POST /{personId} 는 SecurityContext에서 사용자 정보를 추출하여 파싱 서비스를 호출한다")
     void uploadEndpointCallsProcess() throws Exception {
         // Mock User 설정
-        User mockUser = new User("test@example.com", "테스트사용자", LocalDate.of(1990, 1, 1), null);
+        User mockUser = new User("test@example.com", "홍길동", LocalDate.of(1990, 1, 1), null);
         when(userRepository.findById(1L)).thenReturn(Optional.of(mockUser));
 
         MockMultipartFile file = new MockMultipartFile(
@@ -90,14 +90,14 @@ class ParsingControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.status").value("success"));
 
-        Mockito.verify(parsingService).processWithBatchAutoAnalysis(2L, file, "테스트사용자");
+        Mockito.verify(parsingService).processWithBatchAutoAnalysis(2L, file, "홍길동");
     }
 
     @Test
     @DisplayName("PUT /{personId} 는 SecurityContext에서 사용자 정보를 추출하여 업데이트 서비스를 호출한다")
     void updateEndpointCallsUpdate() throws Exception {
         // Mock User 설정
-        User mockUser = new User("test@example.com", "테스트사용자", LocalDate.of(1990, 1, 1), null);
+        User mockUser = new User("test@example.com", "홍길동", LocalDate.of(1990, 1, 1), null);
         when(userRepository.findById(1L)).thenReturn(Optional.of(mockUser));
 
         MockMultipartFile file = new MockMultipartFile(
@@ -119,6 +119,6 @@ class ParsingControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.status").value("success"));
 
-        Mockito.verify(parsingService).update(2L, file, "테스트사용자");
+        Mockito.verify(parsingService).update(2L, file, "홍길동");
     }
 }

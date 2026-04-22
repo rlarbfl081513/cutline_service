@@ -45,8 +45,8 @@ class MonthlyContextBuilderTest {
                 relationshipValueCalculator
         );
 
-        Person person = new Person(new User("user@example.com", "User", LocalDate.of(1990, 1, 1), null),
-                "Friend", LocalDate.of(1990, 1, 1), null, null, PersonRelation.FRIEND, 12);
+        Person person = new Person(new User("user@example.com", "홍길동", LocalDate.of(1990, 1, 1), null),
+                "홍길동2", LocalDate.of(1990, 1, 1), null, null, PersonRelation.FRIEND, 12);
 
         PersonValue aprilValue = new PersonValue(person, 120_000_000, 2025, 4, "", 0.0);
 
@@ -69,7 +69,7 @@ class MonthlyContextBuilderTest {
                 person,
                 aprilValue,
                 "홍길동",
-                "Friend"
+                "홍길동2"
         );
 
         assertThat(contexts)
@@ -101,8 +101,8 @@ class MonthlyContextBuilderTest {
                 relationshipValueCalculator
         );
 
-        Person person = new Person(new User("user@example.com", "User", LocalDate.of(1990, 1, 1), null),
-                "Friend", LocalDate.of(1990, 1, 1), null, null, PersonRelation.FRIEND, 12);
+        Person person = new Person(new User("user@example.com", "홍길동", LocalDate.of(1990, 1, 1), null),
+                "홍길동2", LocalDate.of(1990, 1, 1), null, null, PersonRelation.FRIEND, 12);
 
         PersonValue aprilValue = new PersonValue(person, 120_000_000, 2025, 4, "", 0.0);
 
