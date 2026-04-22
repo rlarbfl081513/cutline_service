@@ -1,0 +1,75 @@
+services:
+  # Spring Boot Application
+  parsing-app:
+    build:
+      context: ./be-parsing
+      dockerfile: Dockerfile
+    container_name: cutline_parsing
+    restart: unless-stopped
+    environment:
+      # Database configuration
+      SPRING_DATASOURCE_URL: ${SPRING_DATASOURCE_URL}
+      SPRING_DATASOURCE_USERNAME: ${SPRING_DATASOURCE_USERNAME}
+      SPRING_DATASOURCE_PASSWORD: ${SPRING_DATASOURCE_PASSWORD}
+      SPRING_DATASOURCE_DRIVER_CLASS_NAME: org.postgresql.Driver
+
+      # JPA configuration
+      SPRING_JPA_HIBERNATE_DDL_AUTO: none
+      SPRING_JPA_SHOW_SQL: "true"
+      SPRING_JPA_PROPERTIES_HIBERNATE_FORMAT_SQL: "true"
+      SPRING_JPA_PROPERTIES_HIBERNATE_JDBC_TIME_ZONE: Asia/Seoul
+      SPRING_JPA_PROPERTIES_HIBERNATE_GLOBALLY_QUOTED_IDENTIFIERS: "true"
+
+      # Jackson configuration
+      SPRING_JACKSON_TIME_ZONE: Asia/Seoul
+
+      # Server configuration
+      SERVER_PORT: 8080
+      SERVER_SERVLET_CONTEXT_PATH: /
+      SERVER_FORWARD_HEADERS_STRATEGY: framework
+
+      # Swagger configuration
+      SWAGGER_SERVER_URL: ${SWAGGER_SERVER_URL}
+      SPRINGDOC_API_DOCS_PATH: /api-docs
+      SPRINGDOC_SWAGGER_UI_PATH: /swagger-ui.html
+      SPRINGDOC_SWAGGER_UI_CONFIGURL: /parsing/api-docs/swagger-config
+      SPRINGDOC_SWAGGER_UI_TAGS_SORTER: alpha
+      SPRINGDOC_SWAGGER_UI_OPERATIONS_SORTER: alpha
+
+      # Logging configuration
+      LOGGING_LEVEL_ORG_HIBERNATE_SQL: debug
+      LOGGING_LEVEL_ORG_HIBERNATE_ORM_JDBC_BIND: trace
+
+      # Java options
+      JAVA_OPTS: "-Xms512m -Xmx1024m -Dspring.profiles.active=docker"
+
+      # AI configuration
+      SPRING_AI_OPENAI_API_KEY: ${SPRING_AI_OPENAI_API_KEY_PARSING}
+      SPRING_AI_OPENAI_BASE_URL: https://api.openai.com
+      SPRING_AI_OPENAI_CHAT_OPTIONS_MODEL: gpt-4o-mini
+      SPRING_AI_OPENAI_CHAT_OPTIONS_TEMPERATURE: 1.0
+
+      # App JWT / OAuth settings
+      APP_JWT_SECRET: ${APP_JWT_SECRET}
+      APP_JWT_ACCESS_TOKEN_VALIDITY_MS: 3600000
+      APP_OAUTH2_REDIRECT_URI: ${APP_OAUTH2_REDIRECT_URI}
+
+    ports:
+      - "8081:8081"
+    depends_on:
+      - postgres
+    networks:
+      - cutline-network
+    volumes:
+      - parsing_logs:/app/logs
+
+# Volumes
+volumes:
+  parsing_logs:
+    driver: local
+
+# Networks
+networks:
+  cutline-network:
+    name: cutline-network
+    external: true

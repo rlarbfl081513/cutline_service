@@ -1,0 +1,33 @@
+services:
+  # Nginx Reverse Proxy
+  nginx:
+    image: nginx:1.24-alpine
+    container_name: cutline_nginx
+    restart: unless-stopped
+    ports:
+      - "80:80"
+    volumes:
+      - ./nginx.conf:/etc/nginx/conf.d/default.conf:ro
+      - ../fe-main/dist:/var/www/html:ro
+      - nginx_logs:/var/log/nginx
+    networks:
+      - cutline-network
+    environment:
+      - NGINX_ENTRYPOINT_QUIET_LOGS=1
+    healthcheck:
+      test: ["CMD", "wget", "--quiet", "--tries=1", "--spider", "http://localhost/health", "||", "exit", "1"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+# Volumes
+volumes:
+  nginx_logs:
+    driver: local
+
+# Networks
+networks:
+  cutline-network:
+    name: cutline-network
+    external: true

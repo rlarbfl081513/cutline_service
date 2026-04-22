@@ -1,0 +1,25 @@
+pipeline {
+    agent any
+
+    environment {
+        DEPLOY_DIR = "/home/ubuntu/docker/jenkins-data/workspace"
+    }
+
+    stages {
+        stage('Checkout') {
+            steps {
+                git branch: 'be/main', url: 'YOUR_GIT_REPOSITORY_URL'
+            }
+        }
+
+        stage('Build & Deploy with docker-compose') {
+            steps {
+                sh """
+                    cd ${DEPLOY_DIR}
+                    sudo docker-compose -f docker-compose.main.yml down
+                    sudo docker-compose -f docker-compose.main.yml up -d --build
+                """
+            }
+        }
+    }
+}

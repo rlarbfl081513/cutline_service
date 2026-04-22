@@ -1,0 +1,96 @@
+services:
+  # Spring Boot Application
+  app:
+    build:
+      context: ./be-main
+      dockerfile: Dockerfile
+    container_name: cutline_app
+    restart: unless-stopped
+    environment:
+
+      # Database configuration
+      SPRING_DATASOURCE_URL: ${SPRING_DATASOURCE_URL}
+      SPRING_DATASOURCE_USERNAME: ${SPRING_DATASOURCE_USERNAME}
+      SPRING_DATASOURCE_PASSWORD: ${SPRING_DATASOURCE_PASSWORD}
+      SPRING_DATASOURCE_DRIVER_CLASS_NAME: org.postgresql.Driver
+
+      # JPA configuration
+      SPRING_JPA_HIBERNATE_DDL_AUTO: none
+      SPRING_JPA_SHOW_SQL: "true"
+      SPRING_JPA_PROPERTIES_HIBERNATE_FORMAT_SQL: "true"
+      SPRING_JPA_PROPERTIES_HIBERNATE_DIALECT: org.hibernate.dialect.PostgreSQLDialect
+      SPRING_JPA_PROPERTIES_HIBERNATE_GLOBALLY_QUOTED_IDENTIFIERS: "true"
+
+      # Jackson configuration
+      SPRING_JACKSON_TIME_ZONE: Asia/Seoul
+
+      # Server configuration
+      SERVER_SERVLET_CONTEXT_PATH: /
+      SERVER_FORWARD_HEADERS_STRATEGY: framework
+
+      # Swagger configuration
+      SWAGGER_SERVER_URL: ${SWAGGER_SERVER_URL}
+      SPRINGDOC_API_DOCS_PATH: /api-docs
+      SPRINGDOC_SWAGGER_UI_PATH: /swagger-ui.html
+      SPRINGDOC_SWAGGER_UI_CONFIGURL: /main/api-docs/swagger-config
+      SPRINGDOC_SWAGGER_UI_TAGS_SORTER: alpha
+      SPRINGDOC_SWAGGER_UI_OPERATIONS_SORTER: alpha
+
+      # AI configuration
+      SPRING_AI_OPENAI_API_KEY: ${SPRING_AI_OPENAI_API_KEY}
+      SPRING_AI_OPENAI_BASE_URL: https://api.openai.com
+      SPRING_AI_OPENAI_CHAT_OPTIONS_MODEL: gpt-4o-mini
+      SPRING_AI_OPENAI_CHAT_OPTIONS_TEMPERATURE: 1.0
+
+      # Logging configuration
+      LOGGING_LEVEL_ORG_HIBERNATE_SQL: debug
+      LOGGING_LEVEL_ORG_HIBERNATE_ORM_JDBC_BIND: trace
+
+      # Java options
+      JAVA_OPTS: "-Xms512m -Xmx1024m -Dspring.profiles.active=docker"
+
+      # Naver Shopping API
+      SPRING_NAVER_SHOPPING_CLIENT_ID: ${SPRING_NAVER_SHOPPING_CLIENT_ID}
+      SPRING_NAVER_SHOPPING_CLIENT_SECRET: ${SPRING_NAVER_SHOPPING_CLIENT_SECRET}
+      SPRING_NAVER_SHOPPING_API_URL: https://openapi.naver.com/v1/search/shop.json
+
+      # Kakao OAuth2 configuration
+      SPRING_SECURITY_OAUTH2_CLIENT_REGISTRATION_KAKAO_CLIENT_ID: ${KAKAO_CLIENT_ID}
+      SPRING_SECURITY_OAUTH2_CLIENT_REGISTRATION_KAKAO_CLIENT_SECRET: ${KAKAO_CLIENT_SECRET}
+      SPRING_SECURITY_OAUTH2_CLIENT_REGISTRATION_KAKAO_CLIENT_AUTHENTICATION_METHOD: client_secret_post
+      SPRING_SECURITY_OAUTH2_CLIENT_REGISTRATION_KAKAO_AUTHORIZATION_GRANT_TYPE: authorization_code
+      SPRING_SECURITY_OAUTH2_CLIENT_REGISTRATION_KAKAO_REDIRECT_URI: ${APP_OAUTH2_REDIRECT_URI}/login/oauth2/code/kakao
+      SPRING_SECURITY_OAUTH2_CLIENT_REGISTRATION_KAKAO_SCOPE: profile_nickname,account_email
+      SPRING_SECURITY_OAUTH2_CLIENT_REGISTRATION_KAKAO_CLIENT_NAME: Kakao
+      SPRING_SECURITY_OAUTH2_CLIENT_REGISTRATION_KAKAO_PROVIDER: kakao
+
+      SPRING_SECURITY_OAUTH2_CLIENT_PROVIDER_KAKAO_AUTHORIZATION_URI: https://kauth.kakao.com/oauth/authorize
+      SPRING_SECURITY_OAUTH2_CLIENT_PROVIDER_KAKAO_TOKEN_URI: https://kauth.kakao.com/oauth/token
+      SPRING_SECURITY_OAUTH2_CLIENT_PROVIDER_KAKAO_USER_INFO_URI: https://kapi.kakao.com/v2/user/me
+      SPRING_SECURITY_OAUTH2_CLIENT_PROVIDER_KAKAO_USER_NAME_ATTRIBUTE: id
+
+      # App JWT / OAuth settings
+      APP_JWT_SECRET: ${APP_JWT_SECRET}
+      APP_JWT_ACCESS_TOKEN_VALIDITY_MS: 3600000
+      APP_OAUTH2_REDIRECT_URI: ${APP_OAUTH2_REDIRECT_URI}
+
+
+    ports:
+      - "8080:8080"
+    depends_on:
+      - postgres
+    networks:
+      - cutline-network
+    volumes:
+      - app_logs:/app/logs
+
+# Volumes
+volumes:
+  app_logs:
+    driver: local
+
+# Networks
+networks:
+  cutline-network:
+    name: cutline-network
+    external: true

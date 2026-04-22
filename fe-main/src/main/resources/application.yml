@@ -1,0 +1,82 @@
+
+spring:
+  messages:
+    encoding: UTF-8 # 메시지 파일(properties) 인코딩
+    servlet:
+      encoding:
+        charset: UTF-8 # 서블릿 요청/응답 인코딩
+        enabled: true
+        force: true
+
+  ai:
+    openai:
+      api-key: ${SPRING_AI_OPENAI_API_KEY}
+      base-url: https://api.openai.com
+      chat:
+        options:
+          model: gpt-4o-mini
+          temperature: 0.7
+
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/cutline?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=Asia/Seoul&characterEncoding=UTF-8
+    username: ${SPRING_DATASOURCE_USERNAME}
+    password: ${SPRING_DATASOURCE_PASSWORD}
+  jpa:
+    hibernate:
+      ddl-auto: none
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+        jdbc:
+          time_zone: Asia/Seoul
+        globally_quoted_identifiers: true
+  jackson:
+    time-zone: Asia/Seoul
+    default-charset: UTF-8
+  security:
+    oauth2:
+      client:
+        registration:
+          kakao:
+            client-id: ${KAKAO_CLIENT_ID}
+            client-secret: ${KAKAO_CLIENT_SECRET}
+            authentication-method: client_secret_post
+            authorization-grant-type: authorization_code
+            redirect-uri: ${APP_OAUTH2_REDIRECT_URI}/login/oauth2/code/kakao
+            scope:
+              - profile_nickname
+              - account_email
+            client-name: Kakao
+            provider: kakao
+        provider:
+          kakao:
+            authorization-uri: https://kauth.kakao.com/oauth/authorize
+            token-uri: https://kauth.kakao.com/oauth/token
+            user-info-uri: https://kapi.kakao.com/v2/user/me
+            user-name-attribute: id
+
+server:
+  servlet:
+    # context-path: /api/v1
+swagger:
+  server-url: ${SWAGGER_SERVER_URL:http://localhost:8080}
+springdoc:
+  api-docs:
+    path: /api-docs
+  swagger-ui:
+    path: /swagger-ui.html
+    tags-sorter: alpha
+    operations-sorter: alpha
+logging:
+  level:
+    org.hibernate.SQL: debug
+    org.hibernate.orm.jdbc.bind: trace
+
+app:
+  jwt:
+    secret: ${APP_JWT_SECRET}
+    access-token-validity-ms: 3600000
+  oauth2:
+    redirect-uri: ${APP_OAUTH2_REDIRECT_URI:http://localhost:3000}
