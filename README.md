@@ -25,10 +25,9 @@
 ## 서비스 메인 기능
 카카오톡 대화 파일 업로드 시 AI를 통한 대화 분석
 1. 월별 주식화 & 대화 속 주요 이슈
-![릴레이 화면](./assets/cut-chat-ai-result.png)
+<img src="./assets/cut-chat-ai-result.png" width="32%">
 2. 관심,비관심에 따른 관계 전력 시나리오 추천
-![릴레이 화면](./assets/cut-senario.png)
-
+<img src="./assets/cut-senario.png" width="32%">
 
 ---
 
